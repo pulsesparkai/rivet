@@ -1,0 +1,6 @@
+{
+  "provider": "openai_compatible",
+  "model": "gpt-4.1-mini",
+  "base_url": "https://api.openai.com/v1",
+  "api_key_env": "RIVET_API_KEY"
+}
