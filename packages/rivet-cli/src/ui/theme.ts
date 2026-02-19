@@ -30,6 +30,7 @@ export interface BootContext {
   writeEnabled: boolean;
   commandsEnabled: boolean;
   dryRun?: boolean;
+  demoMode?: boolean;
 }
 
 export function bootScreen(ctx: BootContext): string {
@@ -38,7 +39,9 @@ export function bootScreen(ctx: BootContext): string {
 
   const logo = RIVET_ASCII.map((l) => theme.brand(l)).join('\n');
 
-  const permMode = ctx.dryRun
+  const permMode = ctx.demoMode
+    ? theme.warning('DEMO MODE (no provider key)')
+    : ctx.dryRun
     ? theme.dim('DRY-RUN')
     : !ctx.writeEnabled && !ctx.commandsEnabled
     ? theme.dim('READ-ONLY')
@@ -56,7 +59,7 @@ export function bootScreen(ctx: BootContext): string {
     '',
     logo,
     '',
-    theme.dim('  by PulseSpark.ai') + '  ' + theme.dim('v0.1.0'),
+    theme.dim('  by PulseSpark AI') + '  ' + theme.dim('v0.1.0'),
     bar,
     `  ${theme.bold('Provider')}   ${theme.highlight(ctx.provider)} ${theme.dim('|')} ${theme.bold('Model')} ${theme.highlight(ctx.model)}`,
     `  ${theme.bold('Workspace')}  ${theme.muted(truncWorkspace)}`,
@@ -70,7 +73,9 @@ export function bootScreen(ctx: BootContext): string {
 }
 
 export function statusBar(ctx: BootContext): string {
-  const permMode = ctx.dryRun
+  const permMode = ctx.demoMode
+    ? theme.warning('[demo]')
+    : ctx.dryRun
     ? theme.dim('[dry-run]')
     : !ctx.writeEnabled && !ctx.commandsEnabled
     ? theme.dim('[read-only]')
@@ -99,7 +104,7 @@ export function banner(): string {
   return [
     '',
     theme.brand('  ╔══════════════════════════════════════╗'),
-    theme.brand('  ║') + theme.brandBold('   Rivet') + theme.dim(' by PulseSpark.ai') + theme.brand('           ║'),
+    theme.brand('  ║') + theme.brandBold('   Rivet') + theme.dim(' by PulseSpark AI') + theme.brand('           ║'),
     theme.brand('  ║') + theme.dim('   Agentic workflows from your terminal') + theme.brand(' ║'),
     theme.brand('  ╚══════════════════════════════════════╝'),
     '',

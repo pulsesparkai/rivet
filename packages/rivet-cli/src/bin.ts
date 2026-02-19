@@ -5,12 +5,14 @@ import { chatCommand } from './commands/chat';
 import { runCommand } from './commands/run';
 import { logsCommand } from './commands/logs';
 import { configCommand } from './commands/config';
+import { doctorCommand } from './commands/doctor';
+import { demoCommand } from './commands/demo';
 
 const program = new Command();
 
 program
   .name('rivet')
-  .description('Rivet by PulseSpark.ai - Agentic workflows from your terminal')
+  .description('Rivet by PulseSpark AI - Agentic workflows from your terminal')
   .version('0.1.0');
 
 program.addCommand(initCommand);
@@ -18,5 +20,7 @@ program.addCommand(chatCommand);
 program.addCommand(runCommand);
 program.addCommand(logsCommand);
 program.addCommand(configCommand);
+program.addCommand(doctorCommand);
+program.addCommand(demoCommand);
 
 program.parse(process.argv);
