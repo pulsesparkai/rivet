@@ -4,4 +4,5 @@ export { loadPermissions, savePermissions, isPathAllowed, isCommandAllowed, matc
 export { executeTool, TOOL_DEFINITIONS, generateDiff } from './tools';
 export { RunLogger } from './run-logger';
 export { initRivet, isInitialized } from './init';
+export { hasSoul, createSoul, loadSoul, loadSoulSafe, summarizeSoul, soulPath } from './soul';
 export * from './workflows';

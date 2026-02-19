@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import ora from 'ora';
-import { AgentLoop, isInitialized, loadPermissions } from '@pulsesparkai/core';
+import { AgentLoop, isInitialized, loadPermissions, loadSoulSafe, summarizeSoul } from '@pulsesparkai/core';
 import { createProvider, loadConfig } from '@pulsesparkai/providers';
 import { theme, bootScreen, statusBar } from '../ui/theme';
 import { TerminalApprovalHandler } from '../ui/approval-handler';
@@ -44,6 +44,16 @@ export const runCommand = new Command('run')
       process.exit(1);
     }
 
+    const soulResult = loadSoulSafe(cwd);
+    let soulContext: string | undefined;
+    if (soulResult) {
+      if (soulResult.hadSecrets) {
+        console.log(theme.warning('  WARNING: .rivet/soul.md contains secrets. They have been redacted.'));
+        console.log('');
+      }
+      soulContext = summarizeSoul(soulResult.content);
+    }
+
     const provider = createProvider(config, cwd);
     const handler = new TerminalApprovalHandler();
 
@@ -53,6 +63,7 @@ export const runCommand = new Command('run')
       workspaceRoot: cwd,
       dryRun: opts.dryRun || false,
       autoApprove: opts.yes || false,
+      soulContext,
     });
 
     agent.startRun(task, config.provider, config.model);

@@ -1,5 +1,6 @@
 import * as readline from 'readline';
-import { initRivet, isInitialized } from '@pulsesparkai/core';
+import { execSync } from 'child_process';
+import { initRivet, isInitialized, hasSoul, createSoul, soulPath } from '@pulsesparkai/core';
 import { saveConfig } from '@pulsesparkai/providers';
 import {
   PROVIDER_PRESETS,
@@ -137,6 +138,10 @@ export async function runOnboardingWizard(cwd: string): Promise<RivetConfig> {
   console.log(theme.success('  Configuration saved to .rivet/config.json'));
   console.log('');
 
+  if (!hasSoul(cwd)) {
+    await offerSoulInstall(cwd);
+  }
+
   return config;
 }
 
@@ -165,4 +170,40 @@ export function needsOnboarding(cwd: string): boolean {
 
 export function isDemoMode(config: RivetConfig): boolean {
   return config.provider === 'demo';
+}
+
+async function offerSoulInstall(cwd: string): Promise<void> {
+  console.log(theme.bold('  Rivet Soul (brain shim)'));
+  console.log(divider());
+  console.log(theme.dim('  A local preference file that helps Rivet match how you work.'));
+  console.log(theme.dim('  Tone, conventions, success criteria. No secrets.'));
+  console.log('');
+
+  const answer = await ask(theme.brand('  Install a Rivet Soul? (recommended) [Y/n] '));
+  if (answer.toLowerCase() === 'n') {
+    console.log(theme.dim('  Skipped. Create later with: rivet soul'));
+    console.log('');
+    return;
+  }
+
+  const p = createSoul(cwd);
+  console.log(theme.success(`  Installed: .rivet/soul.md`));
+  console.log('');
+
+  const editor = process.env.EDITOR || process.env.VISUAL;
+  if (editor) {
+    const editAnswer = await ask(theme.brand(`  Open in ${editor}? [Y/n] `));
+    if (editAnswer.toLowerCase() !== 'n') {
+      try {
+        execSync(`${editor} "${p}"`, { stdio: 'inherit' });
+      } catch {
+        console.log(theme.dim('  Could not open editor. Edit manually:'));
+        console.log(`  ${theme.highlight(p)}`);
+      }
+    }
+  } else {
+    console.log(theme.dim('  Edit when ready:'));
+    console.log(`  ${theme.highlight(p)}`);
+  }
+  console.log('');
 }

@@ -53,3 +53,31 @@ export const DEFAULT_CONFIG = {
   base_url: 'https://api.openai.com/v1',
   api_key_env: 'RIVET_API_KEY',
 };
+
+export const SOUL_FILE = 'soul.md';
+
+export const SOUL_TEMPLATE = `# Rivet Soul (local preferences)
+
+Rivet reads this file to match how you work.
+Do not put secrets here (API keys, passwords, tokens, private client data).
+
+## Who I am
+- Name:
+- Role:
+- What I'm building / working on:
+
+## How I want Rivet to behave
+- Tone (crisp / verbose / minimal):
+- Defaults (read-only vs write prompts):
+- What to always ask before doing:
+- What to never do:
+
+## My environment
+- OS:
+- Shell:
+- Repo / workspace conventions:
+
+## Success criteria
+- What "done" means:
+- Quality bar:
+`;

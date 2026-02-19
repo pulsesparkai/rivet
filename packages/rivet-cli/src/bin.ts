@@ -8,6 +8,7 @@ import { configCommand } from './commands/config';
 import { doctorCommand } from './commands/doctor';
 import { demoCommand } from './commands/demo';
 import { permissionsCommand } from './commands/permissions';
+import { soulCommand } from './commands/soul';
 
 const program = new Command();
 
@@ -24,5 +25,6 @@ program.addCommand(configCommand);
 program.addCommand(doctorCommand);
 program.addCommand(demoCommand);
 program.addCommand(permissionsCommand);
+program.addCommand(soulCommand);
 
 program.parse(process.argv);

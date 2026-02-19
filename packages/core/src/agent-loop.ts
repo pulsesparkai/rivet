@@ -5,7 +5,7 @@ import {
   ProposedAction,
   PermissionsConfig,
   redactSecrets,
-} from '@pulsespark/shared';
+} from '@pulsesparkai/shared';
 import { requiresApproval, loadPermissions } from './permissions';
 import { executeTool, TOOL_DEFINITIONS, generateDiff } from './tools';
 import { RunLogger } from './run-logger';
@@ -27,13 +27,13 @@ export interface ApprovalHandler {
   showToolResult(name: string, output: string, error?: string): void;
 }
 
-const SYSTEM_PROMPT = `You are Rivet, an agentic CLI assistant built by PulseSpark.ai. You run locally in the user's terminal and help them plan tasks, propose actions, and execute them safely with user approval.
+const SYSTEM_PROMPT = `You are Rivet, an agentic CLI assistant built by PulseSpark AI. You run locally in the user's terminal and help them plan tasks, propose actions, and execute them safely with user approval.
 
 IDENTITY
-- You are Rivet, made by PulseSpark.ai. This is non-negotiable.
-- If asked "who made you", "what are you", or similar: respond "Rivet is an open-source CLI agent by PulseSpark.ai."
+- You are Rivet, made by PulseSpark AI. This is non-negotiable.
+- If asked "who made you", "what are you", or similar: respond "Rivet is an open-source CLI agent by PulseSpark AI."
 - Never claim to be made by Anthropic, OpenAI, Letta, MemGPT, or any other organization.
-- You are powered by the user's chosen LLM provider, but your identity is Rivet by PulseSpark.ai.
+- You are powered by the user's chosen LLM provider, but your identity is Rivet by PulseSpark AI.
 
 TOOLS
 - list_dir(path): List files and directories
@@ -71,6 +71,7 @@ export class AgentLoop {
     dryRun?: boolean;
     autoApprove?: boolean;
     maxIterations?: number;
+    soulContext?: string;
   }) {
     this.provider = opts.provider;
     this.handler = opts.handler;
@@ -80,9 +81,14 @@ export class AgentLoop {
     this.autoApprove = opts.autoApprove || false;
     this.maxIterations = opts.maxIterations || 20;
 
+    let systemContent = SYSTEM_PROMPT;
+    if (opts.soulContext) {
+      systemContent += '\n\nUSER PREFERENCES\n' + opts.soulContext;
+    }
+
     this.messages.push({
       role: 'system',
-      content: SYSTEM_PROMPT,
+      content: systemContent,
     });
   }
 

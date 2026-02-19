@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import * as readline from 'readline';
 import * as path from 'path';
-import { AgentLoop, isInitialized, loadPermissions } from '@pulsesparkai/core';
+import { AgentLoop, isInitialized, loadPermissions, loadSoulSafe, summarizeSoul } from '@pulsesparkai/core';
 import { createProvider, loadConfig } from '@pulsesparkai/providers';
 import type { RivetConfig, PermissionsConfig } from '@pulsesparkai/shared';
 import { theme, bootScreen, statusBar, divider } from '../ui/theme';
@@ -60,6 +60,17 @@ export const chatCommand = new Command('chat')
       return;
     }
 
+    const soulResult = loadSoulSafe(cwd);
+    let soulContext: string | undefined;
+    if (soulResult) {
+      if (soulResult.hadSecrets) {
+        console.log(theme.warning('  WARNING: .rivet/soul.md contains secrets. They have been redacted.'));
+        console.log(theme.dim('  Do not store secrets in soul.md.'));
+        console.log('');
+      }
+      soulContext = summarizeSoul(soulResult.content);
+    }
+
     const provider = createProvider(config, cwd);
     const handler = new TerminalApprovalHandler();
 
@@ -69,6 +80,7 @@ export const chatCommand = new Command('chat')
       workspaceRoot: cwd,
       dryRun: opts.dryRun || false,
       autoApprove: opts.yes || false,
+      soulContext,
     });
 
     agent.startRun('interactive-chat', config.provider, config.model);
