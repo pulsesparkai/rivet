@@ -1,0 +1,4 @@
+
+> @pulsespark/core@0.1.0 build /tmp/cc-agent/63771633/project/packages/core
+> tsc -p tsconfig.build.json
+

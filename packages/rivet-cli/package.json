@@ -1,0 +1,32 @@
+{
+  "name": "@pulsespark/rivet",
+  "version": "0.1.0",
+  "description": "Rivet by PulseSpark.ai - Agentic workflows from your terminal",
+  "bin": {
+    "rivet": "./dist/bin.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx src/bin.ts"
+  },
+  "dependencies": {
+    "@pulsespark/core": "workspace:*",
+    "@pulsespark/providers": "workspace:*",
+    "@pulsespark/shared": "workspace:*",
+    "commander": "^12.1.0",
+    "chalk": "^4.1.2",
+    "ora": "^5.4.1",
+    "inquirer": "^8.2.6"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.0",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "keywords": ["cli", "agent", "ai", "terminal", "agentic"],
+  "author": "PulseSpark.ai",
+  "license": "MIT"
+}
