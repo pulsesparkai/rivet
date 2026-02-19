@@ -9,7 +9,8 @@ import {
 } from '@pulsesparkai/core';
 import { loadConfig } from '@pulsesparkai/providers';
 import { containsSecrets, redactSecrets } from '@pulsesparkai/shared';
-import { theme, divider } from '../ui/theme';
+import { theme, bootScreen, statusBar, divider } from '../ui/theme';
+import type { BootContext } from '../ui/theme';
 
 interface CheckResult {
   name: string;
@@ -173,6 +174,23 @@ export const doctorCommand = new Command('doctor')
       const failed = results.filter((r) => r.status === 'fail').length;
       process.exit(failed > 0 ? 1 : 0);
       return;
+    }
+
+    if (isInitialized(cwd)) {
+      try {
+        const config = loadConfig(cwd);
+        const perms = loadPermissions(cwd);
+        const ctx: BootContext = {
+          provider: config.provider,
+          model: config.model,
+          workspace: cwd,
+          writeEnabled: perms.write_file,
+          commandsEnabled: perms.run_command,
+          demoMode: config.provider === 'demo',
+        };
+        console.log(bootScreen(ctx));
+        process.stdout.write(statusBar(ctx));
+      } catch {}
     }
 
     console.log('');

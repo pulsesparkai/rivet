@@ -1,9 +1,10 @@
 import { Command } from 'commander';
 import ora from 'ora';
-import { AgentLoop, isInitialized } from '@pulsespark/core';
-import { createProvider, loadConfig } from '@pulsespark/providers';
-import { theme, banner } from '../ui/theme';
+import { AgentLoop, isInitialized, loadPermissions } from '@pulsesparkai/core';
+import { createProvider, loadConfig } from '@pulsesparkai/providers';
+import { theme, bootScreen, statusBar } from '../ui/theme';
 import { TerminalApprovalHandler } from '../ui/approval-handler';
+import type { BootContext } from '../ui/theme';
 
 export const runCommand = new Command('run')
   .description('Execute a task in one-shot mode')
@@ -11,18 +12,38 @@ export const runCommand = new Command('run')
   .option('--dry-run', 'Plan only, do not execute actions')
   .option('--yes', 'Auto-approve low-risk actions')
   .action(async (task: string, opts) => {
-    const cwd = process.cwd();
+    const cwd = process.env.INIT_CWD ?? process.cwd();
 
     if (!isInitialized(cwd)) {
       console.log(theme.error(' Rivet is not initialized. Run `rivet init` first.'));
       process.exit(1);
     }
 
-    console.log(banner());
-    console.log(theme.bold(` Task: ${task}`));
+    const config = loadConfig(cwd);
+    const perms = loadPermissions(cwd);
+
+    const ctx: BootContext = {
+      provider: config.provider,
+      model: config.model,
+      workspace: cwd,
+      writeEnabled: perms.write_file,
+      commandsEnabled: perms.run_command,
+      dryRun: opts.dryRun || false,
+      demoMode: config.provider === 'demo',
+    };
+
+    console.log(bootScreen(ctx));
+    process.stdout.write(statusBar(ctx));
+
+    console.log(theme.bold(`  Task: ${task}`));
     console.log('');
 
-    const config = loadConfig(cwd);
+    if (config.provider === 'demo') {
+      console.log(theme.warning('  DEMO MODE: Cannot execute tasks without a provider.'));
+      console.log(theme.dim('  Configure a provider: rivet config'));
+      process.exit(1);
+    }
+
     const provider = createProvider(config, cwd);
     const handler = new TerminalApprovalHandler();
 

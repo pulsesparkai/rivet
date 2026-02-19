@@ -1,11 +1,12 @@
 import { Command } from 'commander';
 import * as readline from 'readline';
-import { isInitialized, initRivet } from '@pulsesparkai/core';
+import { isInitialized, initRivet, loadPermissions } from '@pulsesparkai/core';
 import { loadConfig, saveConfig } from '@pulsesparkai/providers';
 import { PROVIDER_PRESETS } from '@pulsesparkai/shared';
-import { theme, divider } from '../ui/theme';
+import { theme, bootScreen, statusBar, divider } from '../ui/theme';
 import { looksLikeLiteralKey } from '../ui/wizard';
 import type { RivetConfig } from '@pulsesparkai/shared';
+import type { BootContext } from '../ui/theme';
 
 export const configCommand = new Command('config')
   .description('View and update provider configuration')
@@ -30,6 +31,20 @@ export const configCommand = new Command('config')
     } catch {
       configMissing = true;
       config = { provider: 'openai_compatible', model: '', api_key_env: 'RIVET_API_KEY' };
+    }
+
+    if (!configMissing && !opts.set) {
+      const perms = loadPermissions(cwd);
+      const ctx: BootContext = {
+        provider: config.provider,
+        model: config.model,
+        workspace: cwd,
+        writeEnabled: perms.write_file,
+        commandsEnabled: perms.run_command,
+        demoMode: config.provider === 'demo',
+      };
+      console.log(bootScreen(ctx));
+      process.stdout.write(statusBar(ctx));
     }
 
     if (opts.set) {

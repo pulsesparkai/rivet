@@ -33,23 +33,29 @@ export interface BootContext {
   demoMode?: boolean;
 }
 
+export function permLabel(ctx: BootContext): string {
+  if (ctx.demoMode) return theme.warning('DEMO MODE (no provider key)');
+  if (ctx.dryRun) return theme.highlight('DRY-RUN');
+  if (!ctx.writeEnabled && !ctx.commandsEnabled) return theme.dim('READ-ONLY');
+  if (ctx.writeEnabled && ctx.commandsEnabled) return theme.danger('WRITE + COMMANDS');
+  if (ctx.writeEnabled) return theme.warning('WRITE');
+  return theme.warning('COMMANDS');
+}
+
+export function permTag(ctx: BootContext): string {
+  if (ctx.demoMode) return theme.warning('[demo]');
+  if (ctx.dryRun) return theme.highlight('[dry-run]');
+  if (!ctx.writeEnabled && !ctx.commandsEnabled) return theme.dim('[read-only]');
+  if (ctx.writeEnabled && ctx.commandsEnabled) return theme.danger('[write+cmd]');
+  if (ctx.writeEnabled) return theme.warning('[write]');
+  return theme.warning('[cmd]');
+}
+
 export function bootScreen(ctx: BootContext): string {
   const w = 54;
   const bar = theme.dim('─'.repeat(w));
 
   const logo = RIVET_ASCII.map((l) => theme.brand(l)).join('\n');
-
-  const permMode = ctx.demoMode
-    ? theme.warning('DEMO MODE (no provider key)')
-    : ctx.dryRun
-    ? theme.dim('DRY-RUN')
-    : !ctx.writeEnabled && !ctx.commandsEnabled
-    ? theme.dim('READ-ONLY')
-    : ctx.writeEnabled && ctx.commandsEnabled
-    ? theme.success('WRITE + COMMANDS ENABLED')
-    : ctx.writeEnabled
-    ? theme.warning('WRITE ENABLED')
-    : theme.warning('COMMANDS ENABLED');
 
   const truncWorkspace = ctx.workspace.length > 44
     ? '...' + ctx.workspace.slice(-41)
@@ -63,7 +69,7 @@ export function bootScreen(ctx: BootContext): string {
     bar,
     `  ${theme.bold('Provider')}   ${theme.highlight(ctx.provider)} ${theme.dim('|')} ${theme.bold('Model')} ${theme.highlight(ctx.model)}`,
     `  ${theme.bold('Workspace')}  ${theme.muted(truncWorkspace)}`,
-    `  ${theme.bold('Perms')}      ${permMode}`,
+    `  ${theme.bold('Perms')}      ${permLabel(ctx)}`,
     `  ${theme.bold('Logs')}       ${theme.dim(path.join('.rivet', 'runs') + '/')}`,
     bar,
     '',
@@ -73,18 +79,6 @@ export function bootScreen(ctx: BootContext): string {
 }
 
 export function statusBar(ctx: BootContext): string {
-  const permMode = ctx.demoMode
-    ? theme.warning('[demo]')
-    : ctx.dryRun
-    ? theme.dim('[dry-run]')
-    : !ctx.writeEnabled && !ctx.commandsEnabled
-    ? theme.dim('[read-only]')
-    : ctx.writeEnabled && ctx.commandsEnabled
-    ? theme.success('[write+cmd]')
-    : ctx.writeEnabled
-    ? theme.warning('[write]')
-    : theme.warning('[cmd]');
-
   return (
     theme.dim('─'.repeat(54)) +
     '\n' +
@@ -95,20 +89,9 @@ export function statusBar(ctx: BootContext): string {
     theme.dim('/') +
     theme.muted(ctx.model) +
     '  ' +
-    permMode +
+    permTag(ctx) +
     '\n'
   );
-}
-
-export function banner(): string {
-  return [
-    '',
-    theme.brand('  ╔══════════════════════════════════════╗'),
-    theme.brand('  ║') + theme.brandBold('   Rivet') + theme.dim(' by PulseSpark AI') + theme.brand('           ║'),
-    theme.brand('  ║') + theme.dim('   Agentic workflows from your terminal') + theme.brand(' ║'),
-    theme.brand('  ╚══════════════════════════════════════╝'),
-    '',
-  ].join('\n');
 }
 
 export function divider(): string {
