@@ -21,7 +21,7 @@ export const PROVIDER_PRESETS: ProviderPreset[] = [
     provider: 'openai_compatible',
     base_url: 'https://api.openai.com/v1',
     api_key_env: 'OPENAI_API_KEY',
-    default_model: 'gpt-4.1-mini',
+    default_model: 'gpt-4o-mini',
     key_required: true,
   },
   {

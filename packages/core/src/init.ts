@@ -8,7 +8,7 @@ import {
   RUNS_DIR,
   DEFAULT_PERMISSIONS,
   DEFAULT_CONFIG,
-} from '@pulsespark/shared';
+} from '@pulsesparkai/shared';
 
 export function initRivet(workspaceRoot: string): { created: string[]; existed: string[] } {
   const rivetDir = path.join(workspaceRoot, RIVET_DIR);

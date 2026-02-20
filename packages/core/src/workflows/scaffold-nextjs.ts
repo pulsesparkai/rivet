@@ -1,4 +1,4 @@
-import { ProposedAction } from '@pulsespark/shared';
+import { ProposedAction } from '@pulsesparkai/shared';
 
 export const scaffoldNextjs = {
   name: 'scaffold-nextjs',

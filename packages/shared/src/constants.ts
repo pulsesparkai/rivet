@@ -49,9 +49,9 @@ export const DEFAULT_PERMISSIONS: Record<string, unknown> = {
 
 export const DEFAULT_CONFIG = {
   provider: 'openai_compatible',
-  model: 'gpt-4.1-mini',
+  model: 'gpt-4o-mini',
   base_url: 'https://api.openai.com/v1',
-  api_key_env: 'RIVET_API_KEY',
+  api_key_env: 'OPENAI_API_KEY',
 };
 
 export const SOUL_FILE = 'soul.md';

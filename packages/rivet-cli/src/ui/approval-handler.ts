@@ -1,7 +1,7 @@
 import * as readline from 'readline';
 import chalk from 'chalk';
-import { ProposedAction } from '@pulsespark/shared';
-import { ApprovalHandler } from '@pulsespark/core';
+import { ProposedAction } from '@pulsesparkai/shared';
+import { ApprovalHandler } from '@pulsesparkai/core';
 import { theme, divider } from './theme';
 
 const alwaysAllowedTools = new Set<string>();
@@ -29,7 +29,7 @@ export class TerminalApprovalHandler implements ApprovalHandler {
       medium: theme.warning,
       high: theme.danger,
     };
-    const riskLabel = riskColors[action.risk](`${action.risk.toUpperCase()}`);
+    const riskLabel = riskColors[action.risk as "low" | "medium" | "high"](`${action.risk.toUpperCase()}`);
 
     const typeLabel =
       action.tool === 'write_file' ? chalk.cyan('WRITE FILE') :
@@ -104,6 +104,8 @@ export class TerminalApprovalHandler implements ApprovalHandler {
     console.log('');
   }
 
+  private streaming = false;
+
   showMessage(role: string, content: string): void {
     if (role === 'assistant') {
       console.log('');
@@ -113,6 +115,30 @@ export class TerminalApprovalHandler implements ApprovalHandler {
         console.log(`  ${line}`);
       }
       console.log('');
+    }
+  }
+
+  streamToken(token: string): void {
+    if (!this.streaming) {
+      this.streaming = true;
+      console.log('');
+      console.log(theme.brand('  Rivet'));
+      console.log(theme.dim('  ' + '─'.repeat(40)));
+      process.stdout.write('  ');
+    }
+    const lines = token.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      if (i > 0) {
+        process.stdout.write('\n  ');
+      }
+      process.stdout.write(lines[i]);
+    }
+  }
+
+  streamEnd(): void {
+    if (this.streaming) {
+      this.streaming = false;
+      process.stdout.write('\n\n');
     }
   }
 

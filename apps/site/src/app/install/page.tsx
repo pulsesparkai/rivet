@@ -4,7 +4,7 @@ export default function InstallPage() {
   return (
     <PageLayout title="Install Rivet" description="Get up and running in under a minute.">
       <h2>npm (recommended)</h2>
-      <pre><code>npm i -g @pulsespark/rivet</code></pre>
+      <pre><code>npm i -g @pulsesparkai/rivet</code></pre>
       <p>Then initialize in your project directory:</p>
       <pre><code>{`cd your-project
 rivet init

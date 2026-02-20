@@ -1,4 +1,4 @@
-import { GenerateResponse, ToolCall, generateId, interpolateEnvVars, getNestedValue } from '@pulsespark/shared';
+import { GenerateResponse, ToolCall, generateId, interpolateEnvVars, getNestedValue } from '@pulsesparkai/shared';
 import { ProviderAdapter, ProviderRequest, CustomHttpConfig } from './types';
 
 export class CustomHttpProvider implements ProviderAdapter {

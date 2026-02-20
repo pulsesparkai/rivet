@@ -1,6 +1,6 @@
 import { Command } from 'commander';
-import { RunLogger } from '@pulsespark/core';
-import { RunLog, formatTimestamp, truncate } from '@pulsespark/shared';
+import { RunLogger } from '@pulsesparkai/core';
+import { RunLog, formatTimestamp, truncate } from '@pulsesparkai/shared';
 import { theme, divider } from '../ui/theme';
 
 export const logsCommand = new Command('logs')

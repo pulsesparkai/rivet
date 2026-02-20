@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { RivetConfig, RIVET_DIR, CUSTOM_PROVIDER_FILE } from '@pulsespark/shared';
+import { RivetConfig, RIVET_DIR, CUSTOM_PROVIDER_FILE } from '@pulsesparkai/shared';
 import { ProviderAdapter } from './types';
 import { OpenAICompatibleProvider } from './openai-compatible';
 import { AnthropicProvider } from './anthropic';
@@ -9,20 +9,20 @@ import { CustomHttpProvider } from './custom-http';
 export { OpenAICompatibleProvider } from './openai-compatible';
 export { AnthropicProvider } from './anthropic';
 export { CustomHttpProvider } from './custom-http';
-export type { ProviderAdapter, ProviderRequest, OpenAICompatibleConfig, AnthropicConfig, CustomHttpConfig } from './types';
+export type { ProviderAdapter, ProviderRequest, StreamCallback, OpenAICompatibleConfig, AnthropicConfig, CustomHttpConfig } from './types';
 
 export function createProvider(config: RivetConfig, workspaceRoot: string): ProviderAdapter {
   switch (config.provider) {
     case 'openai_compatible':
       return new OpenAICompatibleProvider({
         base_url: config.base_url || 'https://api.openai.com/v1',
-        api_key_env: config.api_key_env || 'RIVET_API_KEY',
+        api_key_env: config.api_key_env || 'OPENAI_API_KEY',
         model: config.model,
       });
 
     case 'anthropic':
       return new AnthropicProvider({
-        api_key_env: config.api_key_env || 'RIVET_API_KEY',
+        api_key_env: config.api_key_env || 'ANTHROPIC_API_KEY',
         model: config.model,
       });
 

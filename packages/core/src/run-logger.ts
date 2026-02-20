@@ -8,7 +8,7 @@ import {
   generateId,
   timestamp,
   redactSecrets,
-} from '@pulsespark/shared';
+} from '@pulsesparkai/shared';
 
 export class RunLogger {
   private log: RunLog;
@@ -109,5 +109,28 @@ export class RunLogger {
   static getRunById(workspaceRoot: string, id: string): RunLog | null {
     const runs = RunLogger.listRuns(workspaceRoot);
     return runs.find((r) => r.id === id || r.id.startsWith(id)) || null;
+  }
+
+  static deleteRun(workspaceRoot: string, id: string): boolean {
+    const runsDir = path.join(workspaceRoot, RIVET_DIR, RUNS_DIR);
+    if (!fs.existsSync(runsDir)) return false;
+    const files = fs.readdirSync(runsDir).filter((f) => f.endsWith('.json'));
+    for (const f of files) {
+      if (f.includes(id)) {
+        fs.unlinkSync(path.join(runsDir, f));
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static deleteAllRuns(workspaceRoot: string): number {
+    const runsDir = path.join(workspaceRoot, RIVET_DIR, RUNS_DIR);
+    if (!fs.existsSync(runsDir)) return 0;
+    const files = fs.readdirSync(runsDir).filter((f) => f.endsWith('.json'));
+    for (const f of files) {
+      fs.unlinkSync(path.join(runsDir, f));
+    }
+    return files.length;
   }
 }

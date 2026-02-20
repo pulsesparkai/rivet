@@ -6,7 +6,7 @@ import {
   isCommandAllowlisted,
   requiresApproval,
 } from './permissions';
-import { PermissionsConfig, DEFAULT_DENY_PATTERNS } from '@pulsespark/shared';
+import { PermissionsConfig, DEFAULT_DENY_PATTERNS } from '@pulsesparkai/shared';
 
 function makePermissions(overrides: Partial<PermissionsConfig> = {}): PermissionsConfig {
   return {

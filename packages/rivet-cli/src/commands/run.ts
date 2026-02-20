@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import ora from 'ora';
-import { AgentLoop, isInitialized, loadPermissions, loadSoulSafe, summarizeSoul } from '@pulsesparkai/core';
+import { AgentLoop, isInitialized, loadPermissions, loadSoulSafe, summarizeSoul, SecretStore } from '@pulsesparkai/core';
 import { createProvider, loadConfig } from '@pulsesparkai/providers';
 import { theme, bootScreen, statusBar } from '../ui/theme';
 import { TerminalApprovalHandler } from '../ui/approval-handler';
@@ -44,6 +44,14 @@ export const runCommand = new Command('run')
       process.exit(1);
     }
 
+    const secretStore = new SecretStore(cwd);
+    if (config.api_key_env && !process.env[config.api_key_env]) {
+      const fromStore = secretStore.get(config.api_key_env);
+      if (fromStore) {
+        process.env[config.api_key_env] = fromStore;
+      }
+    }
+
     const soulResult = loadSoulSafe(cwd);
     let soulContext: string | undefined;
     if (soulResult) {
@@ -64,6 +72,7 @@ export const runCommand = new Command('run')
       dryRun: opts.dryRun || false,
       autoApprove: opts.yes || false,
       soulContext,
+      buildCommand: config.build_command,
     });
 
     agent.startRun(task, config.provider, config.model);

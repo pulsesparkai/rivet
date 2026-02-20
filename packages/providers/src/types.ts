@@ -1,8 +1,11 @@
-import { Message, ToolDefinition, GenerateResponse } from '@pulsespark/shared';
+import { Message, ToolDefinition, GenerateResponse } from '@pulsesparkai/shared';
+
+export type StreamCallback = (chunk: string) => void;
 
 export interface ProviderAdapter {
   name: string;
   generate(request: ProviderRequest): Promise<GenerateResponse>;
+  generateStream?(request: ProviderRequest, onToken: StreamCallback): Promise<GenerateResponse>;
 }
 
 export interface ProviderRequest {

@@ -1,5 +1,13 @@
 import chalk from 'chalk';
 import * as path from 'path';
+import * as fs from 'fs';
+
+const pkgPath = path.resolve(__dirname, '..', '..', 'package.json');
+let CLI_VERSION = '0.1.0';
+try {
+  const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+  CLI_VERSION = pkg.version || CLI_VERSION;
+} catch { /* fallback */ }
 
 export const theme = {
   brand: chalk.hex('#0ea5e9'),
@@ -65,7 +73,7 @@ export function bootScreen(ctx: BootContext): string {
     '',
     logo,
     '',
-    theme.dim('  by PulseSpark AI') + '  ' + theme.dim('v0.1.0'),
+    theme.dim('  by PulseSpark AI') + '  ' + theme.dim(`v${CLI_VERSION}`),
     bar,
     `  ${theme.bold('Provider')}   ${theme.highlight(ctx.provider)} ${theme.dim('|')} ${theme.bold('Model')} ${theme.highlight(ctx.model)}`,
     `  ${theme.bold('Workspace')}  ${theme.muted(truncWorkspace)}`,

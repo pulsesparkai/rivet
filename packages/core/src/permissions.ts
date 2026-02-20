@@ -5,7 +5,9 @@ import {
   RIVET_DIR,
   PERMISSIONS_FILE,
   DEFAULT_PERMISSIONS,
-} from '@pulsespark/shared';
+} from '@pulsesparkai/shared';
+
+const PROTECTED_PATHS = [RIVET_DIR];
 
 export function loadPermissions(workspaceRoot: string): PermissionsConfig {
   const permPath = path.join(workspaceRoot, RIVET_DIR, PERMISSIONS_FILE);
@@ -38,7 +40,7 @@ export function isPathAllowed(
     return true;
   }
 
-  return permissions.allowed_paths.some((allowed) => {
+  return permissions.allowed_paths.some((allowed: string) => {
     const resolvedAllowed = path.resolve(workspaceRoot, allowed);
     return resolved.startsWith(resolvedAllowed);
   });
@@ -75,10 +77,18 @@ export function matchesDenyPattern(command: string, denyPatterns: string[]): str
 }
 
 export function isCommandAllowlisted(command: string, allowlist: string[]): boolean {
-  return allowlist.some((allowed) => {
+  return allowlist.some((allowed: string) => {
     const trimmedCmd = command.trim();
     const trimmedAllowed = allowed.trim();
     return trimmedCmd === trimmedAllowed || trimmedCmd.startsWith(trimmedAllowed + ' ');
+  });
+}
+
+export function isProtectedPath(targetPath: string, workspaceRoot: string): boolean {
+  const resolved = path.resolve(workspaceRoot, targetPath);
+  return PROTECTED_PATHS.some((p) => {
+    const protectedResolved = path.resolve(workspaceRoot, p);
+    return resolved === protectedResolved || resolved.startsWith(protectedResolved + path.sep);
   });
 }
 
@@ -87,13 +97,17 @@ export function requiresApproval(
   permissions: PermissionsConfig,
   command?: string
 ): boolean {
-  if (toolName === 'write_file') {
+  if (toolName === 'write_file' || toolName === 'str_replace') {
     return permissions.require_diff_approval;
   }
 
   if (toolName === 'run_command') {
     if (!permissions.require_approval_for_commands) return false;
     if (command && isCommandAllowlisted(command, permissions.allowlisted_commands)) return false;
+    return true;
+  }
+
+  if (toolName === 'git_commit' || toolName === 'delegate_task') {
     return true;
   }
 

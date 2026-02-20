@@ -7,3 +7,6 @@ export { demoCommand } from './commands/demo';
 export { doctorCommand, runDoctorQuiet } from './commands/doctor';
 export { permissionsCommand } from './commands/permissions';
 export { soulCommand } from './commands/soul';
+export { runsCommand } from './commands/runs';
+export { secretsCommand } from './commands/secrets';
+export { workflowCommand } from './commands/workflow';

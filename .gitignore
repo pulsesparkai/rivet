@@ -1,2 +1,45 @@
-node_modules
+# --- Dependencies ---
+node_modules/
+.pnpm-store/
+
+# --- Environment / Secrets ---
 .env
+.env.*
+!.env.example
+
+# --- Rivet local state (user-specific, contains secrets/keys/runs) ---
+.rivet/
+!.rivet/README.md
+
+# --- Build output ---
+**/dist/
+**/out/
+apps/site/.next/
+
+# --- Turbo cache ---
+.turbo/
+
+# --- Bolt / IDE ---
+.bolt/
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# --- Wrong lockfiles (pnpm project) ---
+package-lock.json
+yarn.lock
+
+# --- Logs ---
+*.log
+npm-debug.log*
+
+# --- Agent-generated files (SEO audits, landing pages, etc.) ---
+seo-audit-*.md
+visit-*.html
+*.rivetshare
+
+# --- VS Code extension build ---
+packages/rivet-vscode/*.vsix

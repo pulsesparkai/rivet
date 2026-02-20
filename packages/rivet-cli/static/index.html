@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rivet Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+  <aside id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="5" fill="#2383e2"/><path d="M8 8h4v12H8V8zm8 0h4v12h-4V8z" fill="#fff" opacity="0.9"/><path d="M12 12h4v4h-4v-4z" fill="#fff"/></svg>
+      </div>
+      <div class="brand-info">
+        <span class="brand-name">RIVET</span>
+        <span class="brand-tagline">by PulseSpark AI</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#" data-page="overview" class="nav-item active">
+        <span class="nav-icon">◉</span><span class="nav-label">Overview</span>
+      </a>
+      <a href="#" data-page="runs" class="nav-item">
+        <span class="nav-icon">▶</span><span class="nav-label">Runs</span><span class="nav-badge" id="runs-badge" style="display:none">0</span>
+      </a>
+      <a href="#" data-page="workflows" class="nav-item">
+        <span class="nav-icon">⟐</span><span class="nav-label">Workflows</span>
+      </a>
+      <a href="#" data-page="traces" class="nav-item">
+        <span class="nav-icon">⧖</span><span class="nav-label">Traces & Diffs</span>
+      </a>
+      <a href="#" data-page="secrets" class="nav-item">
+        <span class="nav-icon">⛉</span><span class="nav-label">Secrets Vault</span>
+      </a>
+      <a href="#" data-page="security" class="nav-item">
+        <span class="nav-icon">⛨</span><span class="nav-label">Security Center</span>
+      </a>
+      <a href="#" data-page="chat" class="nav-item">
+        <span class="nav-icon">⌁</span><span class="nav-label">Chat</span>
+      </a>
+      <div class="nav-divider"></div>
+      <a href="#" data-page="settings" class="nav-item">
+        <span class="nav-icon">⚙</span><span class="nav-label">Settings</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="system-status">
+        <span id="ws-orb" class="status-orb"></span>
+        <span id="ws-text" class="status-text">Connecting...</span>
+      </div>
+    </div>
+  </aside>
+
+  <div id="topbar">
+    <div class="topbar-left">
+      <button id="sidebar-toggle" class="icon-btn" onclick="App.toggleSidebar()">☰</button>
+      <button class="cmd-palette-trigger" onclick="App.openPalette()">
+        <span class="cmd-icon">⌘</span>
+        <span>Search commands...</span>
+        <kbd>⌘K</kbd>
+      </button>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-info" id="topbar-info">100% Local</span>
+      <span class="topbar-info accent" id="topbar-model">Loading...</span>
+      <span class="topbar-info" id="topbar-secure">All Systems Secure</span>
+    </div>
+  </div>
+
+  <div id="cmd-palette" class="palette-overlay" style="display:none">
+    <div class="palette-box">
+      <input type="text" id="palette-input" class="palette-input" placeholder="Type a command..." autocomplete="off">
+      <div class="palette-results" id="palette-results"></div>
+    </div>
+  </div>
+
+  <main id="content">
+    <div id="page-content"></div>
+  </main>
+
+  <div id="mini-player" style="display:none">
+    <div class="mini-player-bar">
+      <span class="mini-pulse"></span>
+      <span class="mini-text" id="mini-text">Agent running...</span>
+      <span class="mini-step" id="mini-step"></span>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

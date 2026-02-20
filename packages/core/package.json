@@ -1,17 +1,21 @@
 {
-  "name": "@pulsespark/core",
+  "name": "@pulsesparkai/core",
   "version": "0.1.0",
   "private": true,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "dev": "tsc --watch",
     "test": "vitest run"
   },
   "dependencies": {
-    "@pulsespark/shared": "workspace:*",
-    "diff": "^7.0.0"
+    "@pulsesparkai/shared": "workspace:*",
+    "diff": "^7.0.0",
+    "fast-glob": "^3.3.3"
   },
   "devDependencies": {
     "@types/diff": "^6.0.0",

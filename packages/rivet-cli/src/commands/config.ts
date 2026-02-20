@@ -30,7 +30,7 @@ export const configCommand = new Command('config')
       }
     } catch {
       configMissing = true;
-      config = { provider: 'openai_compatible', model: '', api_key_env: 'RIVET_API_KEY' };
+      config = { provider: 'openai_compatible', model: '', api_key_env: 'OPENAI_API_KEY' };
     }
 
     if (!configMissing && !opts.set) {
@@ -123,7 +123,7 @@ async function runProviderWizard(existing: RivetConfig): Promise<RivetConfig> {
   }
   console.log('');
 
-  const providerIdx = await askSelect('Which provider?', PROVIDER_PRESETS.map((p) => p.label));
+  const providerIdx = await askSelect('Which provider?', PROVIDER_PRESETS.map((p: any) => p.label));
   const preset = PROVIDER_PRESETS[providerIdx] || PROVIDER_PRESETS[PROVIDER_PRESETS.length - 1];
 
   if (preset.provider === 'demo') {
@@ -142,7 +142,7 @@ async function runProviderWizard(existing: RivetConfig): Promise<RivetConfig> {
 
     return {
       provider: 'openai_compatible',
-      model: model || 'gpt-4.1-mini',
+      model: model || 'gpt-4o-mini',
       base_url: baseUrl,
       api_key_env: keyEnv,
     };

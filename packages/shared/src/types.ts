@@ -74,6 +74,8 @@ export interface RunLog {
   actions: RunAction[];
   summary?: string;
   status: 'running' | 'completed' | 'failed' | 'cancelled';
+  hasTrace?: boolean;
+  contentGuardAlerts?: number;
 }
 
 export interface RunAction {
@@ -105,6 +107,8 @@ export interface RivetConfig {
   model: string;
   base_url?: string;
   api_key_env?: string;
+  build_command?: string;
+  max_iterations?: number;
 }
 
 export interface MemoryEntry {

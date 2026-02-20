@@ -102,7 +102,7 @@ export default function Home() {
 
               <div className="mt-8 code-block text-sm">
                 <span className="text-gray-500">$</span>{' '}
-                <span className="text-brand-400">npm i -g @pulsespark/rivet</span>
+                <span className="text-brand-400">npm i -g @pulsesparkai/rivet</span>
                 <br />
                 <span className="text-gray-500">$</span>{' '}
                 <span className="text-brand-400">rivet init</span>
@@ -154,7 +154,7 @@ export default function Home() {
             Install Rivet in seconds and start running agentic workflows from your terminal.
           </p>
           <div className="code-block text-left max-w-md mx-auto mb-8">
-            <p><span className="text-gray-500">$</span> <span className="text-brand-400">npm i -g @pulsespark/rivet</span></p>
+            <p><span className="text-gray-500">$</span> <span className="text-brand-400">npm i -g @pulsesparkai/rivet</span></p>
             <p><span className="text-gray-500">$</span> <span className="text-brand-400">rivet init</span></p>
             <p><span className="text-gray-500">$</span> <span className="text-brand-400">rivet run &quot;add tests to utils.ts&quot;</span></p>
           </div>
