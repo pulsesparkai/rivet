@@ -19,7 +19,7 @@ apps/site/.next/
 # --- Turbo cache ---
 .turbo/
 
-# --- Bolt / IDE ---
+# --- IDE / tool state ---
 .bolt/
 
 # --- OS junk ---
