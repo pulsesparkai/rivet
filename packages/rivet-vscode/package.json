@@ -1,0 +1,71 @@
+{
+  "name": "rivet-vscode",
+  "displayName": "Rivet — AI Coding Agent",
+  "description": "VS Code integration for Rivet, the open-source CLI coding agent by PulseSpark AI",
+  "version": "0.1.0",
+  "private": true,
+  "publisher": "pulsesparkai",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "agent",
+    "rivet",
+    "coding-assistant",
+    "pulsespark"
+  ],
+  "activationEvents": [
+    "onView:rivet-chat"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "rivet-sidebar",
+          "title": "Rivet",
+          "icon": "$(zap)"
+        }
+      ]
+    },
+    "views": {
+      "rivet-sidebar": [
+        {
+          "type": "webview",
+          "id": "rivet-chat",
+          "name": "Chat"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "rivet.openDashboard",
+        "title": "Rivet: Open Dashboard"
+      },
+      {
+        "command": "rivet.startAgent",
+        "title": "Rivet: Start Agent"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -watch -p tsconfig.json",
+    "package": "npx @vscode/vsce package"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.0"
+  },
+  "files": [
+    "dist",
+    "package.json"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@pulsesparkai/providers",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@pulsesparkai/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pulsesparkai/rivet.git",
+    "directory": "packages/providers"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "PulseSpark.ai",
+  "license": "MIT"
+}
